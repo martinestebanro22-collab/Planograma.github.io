@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HERGO | Planograma comercial</title>
+<style>
+:root{--navy:#0545e5;--blue:#23617c;--cream:#ff0060;--ink:#23348d;--muted:#687780;--line:#81cdfa;--bg:#f5f5f5;--green:#2d8b62;--amber:#d59a24;--red:#c65353}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,Arial,sans-serif}header{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:5}.brand{display:flex;align-items:center;gap:13px}.logo{background:var(--navy);color:#fff;font-weight:900;letter-spacing:2px;padding:11px 14px;border-radius:4px}.brand strong{letter-spacing:1px}.brand small{display:block;color:var(--muted);font-size:12px}.pill{font-size:11px;color:#52636c;background:#eef2f3;padding:6px 10px;border-radius:20px}nav{display:flex;gap:6px;padding:10px 22px;background:#fff;border-bottom:1px solid var(--line);overflow:auto}button,select,input,textarea{font:inherit}button{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 12px;border-radius:6px;cursor:pointer}button:hover{border-color:#7893a0}button.primary{background:var(--navy);color:#fff;border-color:var(--navy)}button.active{background:#e9f0f3;color:var(--navy);border-color:#b8cbd3;font-weight:700}main{max-width:1800px;margin:auto;padding:18px 22px}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar select,.toolbar input{border:1px solid var(--line);border-radius:6px;padding:10px;background:#fff}.toolbar input{min-width:220px}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden}.panelhead{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;border-bottom:1px solid var(--line)}.planviewport{height:calc(100vh - 230px);min-height:540px;overflow:auto;background:#e9eef0;padding:14px;display:flex;align-items:flex-start;justify-content:center}.planstage{position:relative;flex:0 0 auto;width:min(100%,1050px);transform-origin:top center}.planstage img{display:block;width:100%;height:auto;background:#fff;box-shadow:0 2px 12px #162c381c}.markers{position:absolute;inset:0}.marker{position:absolute;transform:translate(-50%,-50%);border:2px solid var(--marker-ring,white);border-radius:50%;width:27px;height:27px;background:var(--blue);color:#fff;font-size:10px;font-weight:800;padding:0;box-shadow:0 1px 5px #0006;white-space:nowrap}.marker.available{background:var(--green)}.marker.reserved{background:var(--amber)}.marker.sold{background:var(--red)}.marker.selected{outline:3px solid #f0c44d;z-index:3}.marker{cursor:grab;touch-action:none;user-select:none}.marker.dragging{cursor:grabbing;z-index:8;transform:translate(-50%,-50%) scale(1.18);box-shadow:0 4px 12px #0007}.marker::after{content:attr(data-label);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#17364a;color:#fff;font-size:10px;font-weight:700;letter-spacing:.3px;padding:3px 7px;border-radius:4px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;box-shadow:0 2px 8px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.7);text-shadow:0 1px 2px rgba(0,0,0,.6);z-index:9}.marker:hover::after,.marker.selected::after{opacity:1}.side{padding:16px;position:sticky;top:145px;max-height:calc(100vh - 165px);overflow:auto}.side h3{margin:0 0 4px}.muted{color:var(--muted);font-size:12px}.field{margin:12px 0}.field label{display:block;font-size:11px;font-weight:700;color:#586a73;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:9px;background:white}.field textarea{min-height:75px}.hint{padding:10px 12px;background:#f3f6f7;border-radius:6px;color:#586a73;font-size:12px;margin-top:12px}.legend{display:flex;gap:14px;flex-wrap:wrap;padding:10px 15px;color:#52636c;font-size:11px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.brand-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;border:1px solid #0002}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.stat{background:white;border:1px solid var(--line);border-radius:8px;padding:16px}.stat b{font-size:25px;display:block}.hidden{display:none!important}.tablewrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:11px;border-bottom:1px solid #edf0f1}th{font-size:11px;text-transform:uppercase;color:#687780;background:#f8fafb}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}.photo{background:#fff;border:1px solid var(--line);padding:8px;border-radius:8px}.photo img{width:100%;height:140px;object-fit:cover}.photo button{margin-top:6px}.actions{display:flex;gap:7px;margin-top:14px}.actions button{flex:1}#toast{position:fixed;bottom:18px;right:18px;background:#17364a;color:#fff;padding:11px 15px;border-radius:7px;display:none;z-index:10}@media(max-width:900px){header{padding:0 12px}.pill{display:none}main{padding:12px}.workspace{grid-template-columns:1fr}.side{position:static;max-height:none}.planviewport{height:68vh;min-height:430px}.planstage{width:100%}}
+/* ===== Proveedores view only ===== */
+#supplierMarkers .marker{--marker-ring:#ffffff !important;cursor:pointer;pointer-events:auto}
+#supplierMarkers .marker::after{display:none}
+#supplierMarkers .marker:hover{transform:translate(-50%,-50%) scale(1.08)}
+#supplierMarkers .marker.supplier-active{outline:3px solid #f0c44d;z-index:3}
+/* ================================== */  
+</style></head><body>
+<header><div class="brand"><div class="logo">HERGO</div><div><strong>PLANOGRAMA COMERCIAL</strong><small>Gestión de espacios y oportunidades comerciales</small></div></div><span class="pill">Versión local · Guardado en este navegador</span></header>
+<nav><button class="active" data-view="plan">Croquis</button><button data-view="suppliers">Proveedores</button><button data-view="dashboard">Dashboard</button><button data-view="locations">Ubicaciones</button><button data-view="gallery">Imágenes</button></nav>
+<main>
+<section id="view-plan">
+  <div class="toolbar">
+  <select id="planSelect" title="Plano activo"></select>
+  <button id="addPlan">+ Nuevo plano</button>
+  <button id="deletePlan" title="Borrar plano actual">🗑 Borrar plano</button>
+  <input id="planFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none">
+  <select id="mode">  
+    <option value="all">Todas las ubicaciones</option>
+    <option value="available">Disponibles</option>
+    <option value="reserved">Reservadas</option>
+    <option value="sold">Vendidas</option>
+  </select>
+  <select id="brandFilter"><option value="all">Todas las marcas</option></select>
+  <button id="add" class="primary">+ Agregar marcador</button>
+  <button id="zoomout">−</button>
+  <button id="zoomin">+</button>
+  <button id="fit">Ajustar</button>
+</div>
+  <div class="workspace">
+    <div class="panel">
+      <div class="panelhead"><b>Croquis original de HERGO</b><span class="muted" id="counter">0 ubicaciones cargadas</span></div>
+      <div class="planviewport" id="viewport">
+        <div class="planstage" id="stage">
+          <!-- ⬇⬇ RESTORE YOUR BASE64 IMAGE HERE (replace plano.png with data:image/png;base64,....) ⬇⬇ -->
+            <img id="planImg" src="" alt="Croquis original de HERGO">
+          <div class="markers" id="markers"></div>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:#23617c"></i>Sin clasificar</span>
+        <span><i class="dot" style="background:#2d8b62"></i>Disponible</span>
+        <span><i class="dot" style="background:#d59a24"></i>Reservada</span>
+        <span><i class="dot" style="background:#c65353"></i>Vendida</span>
+      </div>
+    </div>
+    <aside class="panel side" id="detail"><h3>Ficha de ubicación</h3><p class="muted">Seleccioná un marcador o agregá una ubicación sobre el croquis.</p><div class="hint">Hacé clic en “Agregar marcador” y luego elegí su posición sobre el croquis.</div></aside>
+  </div>
+</section>
+<section id="view-suppliers" class="hidden">
+  <div class="toolbar">
+    <label class="muted" for="supplierFilter" style="align-self:center">Proveedor:</label>
+    <select id="supplierFilter"><option value="all">Todos los proveedores</option></select>
+    <button id="supplierZoomout">−</button>
+    <button id="supplierZoomin">+</button>
+    <button id="supplierFit">Ajustar</button>
+    <span class="muted" id="supplierCount" style="margin-left:auto"></span>
+  </div>
+  <div class="panel">
+    <div class="panelhead"><b>Vista por proveedor</b><span class="muted">Solo se muestran los marcadores del proveedor seleccionado</span></div>
+    <div class="planviewport" id="supplierViewport">
+      <div class="planstage" id="supplierStage">
+        <!-- ⬇⬇ RESTORE YOUR BASE64 IMAGE HERE (same image as the Croquis section) ⬇⬇ -->
+        <img id="supplierPlanImg" src="" alt="Croquis original de HERGO">   
+        <div class="markers" id="supplierMarkers"></div>
+      </div>
+    </div>
+    <div class="hint" style="margin:14px">Los marcadores de esta vista no son editables y usan siempre un anillo blanco. Los colores de marca solo se aplican en la sección "Croquis".</div>
+  </div>
+</section><h2>Dashboard comercial</h2><div class="stats" id="stats</section>
+<section id="view-dashboard" class="hidden"><h2>Dashboard comercial</h2><div class="stats" id="stats"></div></section>"></div></section>
+<section id="view-locations" class="hidden"><h2>Ubicaciones</h2><div class="toolbar"><input id="listsearch" placeholder="Buscar"><button id="export">Exportar CSV</button></div><div class="tablewrap"><table><thead><tr><th>Código</th><th>Nombre</th><th>Sector</th><th>Estado</th><th>Marca</th><th></th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section id="view-gallery" class="hidden"><h2>Biblioteca de imágenes</h2><p class="muted">Las imágenes se vinculan a la ubicación seleccionada y quedan guardadas en este navegador.</p><div id="gallery" class="gallery"></div></section>
+</main><div id="toast"></div>
+
+<dialog id="confirmDialog" style="border:1px solid var(--line);border-radius:9px;padding:18px;max-width:420px;font:inherit;color:var(--ink);box-shadow:0 8px 32px #0003">
+  <h3 id="confirmTitle" style="margin:0 0 8px;font-size:15px"></h3>
+  <p id="confirmMessage" class="muted" style="margin:0 0 16px;white-space:pre-line"></p>
+  <div style="display:flex;gap:8px;justify-content:flex-end">
+    <button id="confirmCancel">Cancelar</button>
+    <button id="confirmOk" class="primary">Borrar</button>
+  </div>
+</dialog>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let items=JSON.parse(localStorage.getItem('hergo_items_v2')||'[]'),
+    selected=null, zoom=1, draggingId=null, isPlacing=false;
+
+// ===== Multi-plan state =====        ← Point 2 goes here now
+const PLANS_KEY = 'hergo_plans_v1';
+const ACTIVE_PLAN_KEY = 'hergo_active_plan_v1';
+const DEFAULT_PLAN_ID = 'plan_default';
+
+let plans = JSON.parse(localStorage.getItem(PLANS_KEY) || '[]');
+let activePlanId = localStorage.getItem(ACTIVE_PLAN_KEY) || '';
+
+if(!plans.length){
+  const initialImg = document.getElementById('planImg')?.getAttribute('src') || '';
+  plans = [{
+    id: DEFAULT_PLAN_ID,
+    name: 'Plano original',
+    img: initialImg,
+    createdAt: Date.now()
+  }];
+  localStorage.setItem(PLANS_KEY, JSON.stringify(plans));
+  if(items.length) items.forEach(r=>{ if(!r.planId) r.planId = DEFAULT_PLAN_ID; });
+  localStorage.setItem('hergo_items_v2', JSON.stringify(items));
+}
+
+if(!activePlanId || !plans.some(p=>p.id===activePlanId)){
+  activePlanId = plans[0].id;
+  localStorage.setItem(ACTIVE_PLAN_KEY, activePlanId);
+}
+
+function savePlans(){
+  try {
+    localStorage.setItem(PLANS_KEY, JSON.stringify(plans));
+    return true;
+  } catch(err){
+    console.error('savePlans failed:', err);
+    toast('⚠ No se pudo guardar el plano: '+ (err.name==='QuotaExceededError'
+      ? 'espacio de almacenamiento agotado (probá con una imagen más chica)'
+      : err.message));
+    return false;
+  }
+}
+function setActivePlan(id){
+  if(!plans.some(p=>p.id===id)) return;
+  activePlanId = id;
+  localStorage.setItem(ACTIVE_PLAN_KEY, id);
+  applyActivePlanImage();
+  rebuildPlanSelect();
+  render();
+  renderSupplierView();
+}
+function applyActivePlanImage(){
+  const plan = plans.find(p=>p.id===activePlanId);
+  if(!plan) return;
+  const img1 = document.getElementById('planImg');
+  const img2 = document.getElementById('supplierPlanImg');
+  if(img1) img1.src = plan.img;
+  if(img2) img2.src = plan.img;
+}
+function rebuildPlanSelect(){
+  const sel = $('planSelect');
+  if(!sel) return;
+  sel.innerHTML = '';
+  plans.forEach(p=>{
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = p.name;
+    sel.appendChild(opt);
+  });
+  sel.value = activePlanId;
+}
+// ===== Multi-plan state end =====
+
+function save(){localStorage.setItem('hergo_items_v2',JSON.stringify(items));render()}
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
+function showConfirm({title, message, okLabel='Aceptar', cancelLabel='Cancelar'}){
+  return new Promise(resolve=>{
+    const dlg = $('confirmDialog');
+    $('confirmTitle').textContent = title || 'Confirmar';
+    $('confirmMessage').textContent = message || '';
+    $('confirmOk').textContent = okLabel;
+    $('confirmCancel').textContent = cancelLabel;
+
+    const onOk = ()=>{ cleanup(); resolve(true); };
+    const onCancel = ()=>{ cleanup(); resolve(false); };
+    function cleanup(){
+      dlg.close();
+      $('confirmOk').removeEventListener('click', onOk);
+      $('confirmCancel').removeEventListener('click', onCancel);
+      dlg.removeEventListener('cancel', onCancel);
+    }
+    $('confirmOk').addEventListener('click', onOk);
+    $('confirmCancel').addEventListener('click', onCancel);
+    dlg.addEventListener('cancel', onCancel);   // tecla Esc
+    dlg.showModal();
+  });
+}
+
+// Devuelve todos los colores de anillo ya asignados, agrupados por marca.
+// La "última" marca que asignó color gana; usamos el orden del array items.
+function brandColorMap(){
+  const map = {};
+  for(const r of items){
+    if(r.brand && r.ringColor) map[r.brand] = r.ringColor;
+  }
+  return map;
+}
+function uniqueBrands(){
+  const set = new Set();
+  for(const r of items) if(r.brand) set.add(r.brand);
+  return [...set].sort((a,b)=>a.localeCompare(b));
+}
+function rebuildBrandFilter(){
+  const sel = $('brandFilter');
+  if(!sel) return;
+  const current = sel.value || 'all';
+  const brands = uniqueBrands();
+  sel.innerHTML = '<option value="all">Todas las marcas</option>' +
+    brands.map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join('');
+  if(current !== 'all' && brands.includes(current)) sel.value = current;
+  else sel.value = 'all';
+}
+function rebuildSupplierFilter(){
+  const sel = $('supplierFilter');
+  if(!sel) return;
+  const current = sel.value || 'all';
+  const brands = uniqueBrands();
+  sel.innerHTML = '<option value="all">Todos los proveedores</option>' +
+    brands.map(b=>`<option value="${esc(b)}">${esc(b)}</option>`).join('');
+  if(current === 'all' || brands.includes(current)) sel.value = current;
+  else sel.value = 'all';
+} 
+function render(){
+  let mode=$('mode').value,
+    brandFilter=($('brandFilter')?.value)||'all';
+  $('markers').innerHTML='';
+  items.forEach(r=>{
+  if(r.planId !== activePlanId) return;   
+    if(mode!=='all' && r.status!==mode) return;
+    if(brandFilter!=='all' && r.brand!==brandFilter) return;
+
+    let b=document.createElement('button');
+    b.className='marker '+r.status+(selected===r.id?' selected':'');
+    b.style.left=r.x+'%';
+    b.style.top=r.y+'%';
+
+    // Color del anillo de marca (si existe)
+    if(r.ringColor) b.style.setProperty('--marker-ring', r.ringColor);
+
+    // Tamaño: +25% respecto al base de 27px, sin tocar el grosor del anillo
+  b.style.width  = '50px';
+  b.style.height = '50px';
+  b.style.borderWidth = '7px';
+
+    b.textContent=r.code||'•';
+    b.title=r.name;
+    b.dataset.label=r.code?(r.code+(r.name?' · '+r.name:'')):(r.name||'Ubicación');
+
+    b.onclick=()=>{if(isPlacing)return;selected=r.id;render();detail()};
+    b.addEventListener('pointerdown',e=>{
+      if(e.button!==0||isPlacing)return;
+      e.preventDefault();e.stopPropagation();
+      selected=r.id;draggingId=r.id;
+      b.setPointerCapture(e.pointerId);
+      b.classList.add('dragging');
+      detail();
+    });
+    b.addEventListener('pointermove',e=>{
+      if(draggingId!==r.id)return;
+      const rect=$('stage').getBoundingClientRect();
+      r.x=Math.max(0,Math.min(100,(e.clientX-rect.left)/rect.width*100));
+      r.y=Math.max(0,Math.min(100,(e.clientY-rect.top)/rect.height*100));
+      b.style.left=r.x+'%';b.style.top=r.y+'%';
+    });
+    b.addEventListener('pointerup',e=>{
+      if(draggingId!==r.id)return;
+      draggingId=null;b.classList.remove('dragging');
+      save();detail();toast('Ubicación guardada');
+    });
+    b.addEventListener('pointercancel',()=>{
+      if(draggingId===r.id){draggingId=null;save();detail();}
+    });
+    $('markers').appendChild(b)
+  });
+  $('counter').textContent=items.length+' ubicaciones cargadas';
+rebuildBrandFilter();
+// ▼ Only refresh the supplier dropdown; the supplier markers render
+//   lazily when the Proveedores view is opened or its filter changes.
+rebuildSupplierFilter();
+renderRows();renderStats();renderGallery()
+}
+function renderSupplierView(){
+  // ⚠ Only run when the Proveedores section is actually visible
+  if($('view-suppliers').classList.contains('hidden')) return;
+
+  const wrap = $('supplierMarkers');
+  if(!wrap) return;
+  const brand = $('supplierFilter').value;
+  wrap.innerHTML='';
+
+  const isAll = (brand === 'all');
+  const base = items.filter(r=>r.planId===activePlanId);
+  const match = isAll ? base : base.filter(r=>r.brand === brand);
+
+  match.forEach(r=>{
+    const b=document.createElement('button');
+    b.className='marker';                        // sin clase de estado: el fondo lo define el proveedor
+    b.style.left=r.x+'%';
+    b.style.top=r.y+'%';
+    b.style.width='41px';
+    b.style.height='41px';
+    b.style.borderWidth='2px';
+
+    // Color interior = color asignado al proveedor.
+    // Si el marcador no tiene proveedor → gris oscuro.
+    // El anillo blanco lo sigue forzando el CSS (#supplierMarkers .marker{--marker-ring:#fff!important})
+    const inner = (r.brand && r.ringColor && r.ringColor.toLowerCase() !== '#ffffff') ? r.ringColor : '#4a4a4a';
+    b.style.background = inner;
+
+    b.textContent=r.code||'•';
+    b.title=`${r.code||''} — ${r.name||''}${r.brand?' ('+r.brand+')':''}`;
+    wrap.appendChild(b);
+  });
+
+  $('supplierCount').textContent = isAll
+    ? `${match.length} marcador(es) — todos los proveedores`
+    : `${match.length} marcador(es) para "${brand}"`;
+}
+
+function detail(){
+  let r=items.find(x=>x.id===selected);
+  if(!r){
+    $('detail').innerHTML='<h3>Ficha de ubicación</h3><p class="muted">Seleccioná un marcador o agregá una ubicación sobre el croquis.</p><div class="hint">Hacé clic en “Agregar marcador” y luego elegí su posición sobre el croquis.</div>';
+    return;
+  }
+
+  const brandMap = brandColorMap();
+  const suggestions = uniqueBrands().map(b=>{
+    const c = brandMap[b] || '#9ca3af';
+    return `<div class="brand-suggestion" data-brand="${esc(b)}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;border-radius:4px">
+      <span class="brand-dot" style="background:${c}"></span>
+      <span>${esc(b)}</span>
+    </div>`;
+  }).join('');
+
+  $('detail').innerHTML=`
+    <h3>${esc(r.code||'Nueva ubicación')}</h3>
+    <p class="muted">Ficha comercial editable</p>
+
+    <div class="field"><label>Código</label><input id="fcode" value="${esc(r.code)}"></div>
+    <div class="field"><label>Nombre / descripción</label><input id="fname" value="${esc(r.name)}"></div>
+<div class="field"><label>Sector</label><select id="fsector"><option value="Aguas">Aguas</option><option value="Almacén">Almacén</option><option value="Amargos">Amargos</option><option value="Artículos de baño">Artículos de baño</option><option value="Art de uso doméstico">Art de uso doméstico</option><option value="Bazar">Bazar</option><option value="Bebida con alcohol">Bebida con alcohol</option><option value="Bebida sin alcohol">Bebida sin alcohol</option><option value="Bebidas espirituosas">Bebidas espirituosas</option><option value="Conservas">Conservas</option><option value="Energizantes">Energizantes</option><option value="Especias">Especias</option><option value="Frescos">Frescos</option><option value="Gaseosas">Gaseosas</option><option value="Galletitas">Galletitas</option><option value="Jabón de ropa">Jabón de ropa</option><option value="Jugos en polvo">Jugos en polvo</option><option value="Lavavajillas">Lavavajillas</option><option value="Limpiadores">Limpiadores</option><option value="Perecederos">Perecederos</option><option value="Perfumería">Perfumería</option><option value="Prod. De higiene personal">Prod. De higiene personal</option><option value="Prod. De te">Prod. De te</option><option value="Sidras">Sidras</option><option value="Vinos">Vinos</option></select></div>    <div class="field"><label>Estado comercial</label><select id="fstatus"><option value="unclassified">Sin clasificar</option><option value="available">Disponible</option><option value="reserved">Reservada</option><option value="sold">Vendida</option></select></div>
+    <div class="field">
+    <div class="field"><label>Marca</label><input id="fprovider" value="${esc(r.provider)}"></div>
+
+  <label>Proveedor</label>
+  <div style="display:flex;gap:6px;align-items:center">
+    <div style="flex:1;position:relative">
+      <input id="fbrand" value="${esc(r.brand)}" autocomplete="off" style="width:100%">
+      <div id="brandSuggest" style="display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 4px 12px #0002;z-index:20;max-height:180px;overflow:auto;padding:4px">${suggestions||'<div class="muted" style="padding:6px 8px">Sin marcas guardadas</div>'}</div>
+    </div>
+    <input type="color" id="fring" value="${r.ringColor||'#ffffff'}" title="Color del anillo de la marca" style="width:38px;height:38px;padding:2px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer">
+  </div>
+  <div class="muted" id="ringHint">${r.ringColor?'Color del anillo asignado.':'Elegí un color para el anillo exterior del marcador.'}</div>
+</div>
+
+
+    <div class="field"><label>Producto / exhibición</label><input id="fproduct" value="${esc(r.product)}"></div>
+    <div class="field"><label>Precio (ARS)</label><input id="fprice" value="${esc(r.price)}"></div>
+    <div class="field"><label>Responsable</label><input id="fowner" value="${esc(r.owner)}"></div>
+    <div class="field"><label>Observaciones</label><textarea id="fnotes">${esc(r.notes)}</textarea></div>
+    <div class="field"><label>Fotografías</label><input type="file" id="photos" accept="image/png,image/jpeg,image/webp" multiple><div class="muted">${r.images.length} imagen(es) vinculada(s)</div></div>
+    <div id="recordphotos" class="gallery"></div>
+    <div class="actions"><button class="primary" id="save">Guardar</button><button id="delete">Eliminar</button></div>
+  `;
+
+  $('fstatus').value=r.status;
+  $('fsector').value=r.sector;
+
+  // ---- Autocompletar de marca ----
+  const brandInput = $('fbrand');
+  const sugg = $('brandSuggest');
+  brandInput.addEventListener('input', ()=>{
+    const v = brandInput.value.toLowerCase();
+    const filtered = uniqueBrands().filter(b=>b.toLowerCase().includes(v));
+    const map = brandColorMap();
+    sugg.innerHTML = filtered.length
+      ? filtered.map(b=>{
+          const c=map[b]||'#9ca3af';
+          return `<div class="brand-suggestion" data-brand="${esc(b)}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer;border-radius:4px">
+            <span class="brand-dot" style="background:${c}"></span>
+            <span>${esc(b)}</span>
+          </div>`;
+        }).join('')
+      : '<div class="muted" style="padding:6px 8px">Sin coincidencias</div>';
+    sugg.style.display='block';
+  });
+  brandInput.addEventListener('focus', ()=> sugg.style.display='block');
+  brandInput.addEventListener('blur', ()=> setTimeout(()=>sugg.style.display='none',150));
+
+  // Sugerencias: si se elige una marca existente, AUTO-ASIGNAR su color
+  document.querySelectorAll('#brandSuggest .brand-suggestion').forEach(el=>{
+    el.addEventListener('mousedown', e=>{
+      e.preventDefault();
+      const b = el.dataset.brand;
+      brandInput.value = b;
+      const map = brandColorMap();
+      if(map[b]){ $('fring').value = map[b]; $('ringHint').textContent = `Color del anillo para "${b}" (heredado).`; }
+      sugg.style.display='none';
+    });
+  });
+
+  $('fring').addEventListener('input', ()=>{
+    $('ringHint').textContent = 'Color del anillo asignado.';
+  });
+
+  $('save').onclick=()=>{
+  const newBrand = $('fbrand').value.trim();
+  const newRing  = $('fring').value;
+
+  // ¿El usuario realmente eligió un color nuevo (distinto al guardado)?
+  const colorChanged = newRing && newRing !== (r.ringColor || '');
+  const brandChanged = newBrand !== (r.brand || '');
+
+  // 1) Guardar los campos de ESTE marcador primero
+  Object.assign(r,{
+    code:$('fcode').value, name:$('fname').value, sector:$('fsector').value,
+    status:$('fstatus').value, provider:$('fprovider').value,
+    brand:newBrand,
+    ringColor:newRing,
+    product:$('fproduct').value, price:$('fprice').value,
+    owner:$('fowner').value, notes:$('fnotes').value
+  });
+
+  // 2) Si cambió el color (o la marca), propagar a TODOS los marcadores
+  //    que compartan el mismo valor de "MARCAS".
+  if(newBrand && (colorChanged || brandChanged)){
+    items.forEach(other=>{
+      if(other.id !== r.id && other.brand === newBrand){
+        other.ringColor = newRing;
+      }
+    });
+  }
+
+  save();       // localStorage + render() → repinta todos los marcadores al instante
+  detail();     // refresca el panel con el estado consolidado
+  toast('Ficha guardada');
+};
+
+  $('delete').onclick=()=>{if(confirm('¿Eliminar esta ubicación?')){items=items.filter(x=>x.id!==r.id);selected=null;save();detail()}};
+  $('photos').onchange=async e=>{for(let f of e.target.files){if(!f.type.startsWith('image/'))continue;let src=await new Promise(ok=>{let rd=new FileReader();rd.onload=()=>ok(rd.result);rd.readAsDataURL(f)});r.images.push({name:f.name,src})}save();detail()};
+  $('recordphotos').innerHTML=r.images.map((im,i)=>`<div class="photo"><img src="${im.src}"><div>${esc(im.name)}</div><button data-remove="${i}">Quitar</button></div>`).join('');
+  document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{r.images.splice(+b.dataset.remove,1);save();detail()})
+}
+
+function add(){
+  isPlacing=true;
+  $('viewport').style.cursor='crosshair';
+  $('detail').innerHTML='<h3>Colocar marcador</h3><p class="muted">Hacé clic sobre el croquis para ubicar el nuevo marcador.</p><div class="hint">Presioná <b>Esc</b> para cancelar.</div>';
+  toast('Hacé clic en el croquis para colocar el marcador');
+}
+
+$('viewport').addEventListener('click',e=>{
+  if(!isPlacing)return;
+  if(e.target.closest('.marker'))return;
+  e.preventDefault();
+  const rect=$('stage').getBoundingClientRect();
+  const r={
+  id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),
+  code:'NUEVA-'+(items.length+1),
+  name:'Nueva ubicación',sector:'example1',status:'unclassified',
+  provider:'',brand:'',ringColor:'',product:'',price:'',owner:'',notes:'',images:[],
+  planId:activePlanId,
+  x:Math.max(0,Math.min(100,(e.clientX-rect.left)/rect.width*100)),
+  y:Math.max(0,Math.min(100,(e.clientY-rect.top)/rect.height*100))
+  };
+  items.push(r);selected=r.id;isPlacing=false;$('viewport').style.cursor='default';
+  save();detail();toast('Marcador agregado');
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&isPlacing){
+    isPlacing=false;$('viewport').style.cursor='default';
+    detail();toast('Colocación cancelada');
+  }
+});
+
+$('add').onclick=add;
+$('mode').onchange=render;
+$('brandFilter')?.addEventListener('change',render);
+// ===== Multi-plan UI: selector + upload =====
+$('planSelect').addEventListener('change', e=>setActivePlan(e.target.value));
+
+$('addPlan').onclick = ()=>{ $('planFile').click(); };
+$('deletePlan').onclick = async ()=>{
+  const plan = plans.find(p=>p.id===activePlanId);
+  if(!plan){ toast('No hay plano activo'); return; }
+
+  const markerCount = items.filter(r=>r.planId===activePlanId).length;
+
+  if(plans.length === 1){
+    toast('No se puede borrar el único plano');
+    return;
+  }
+
+  const msg = markerCount
+    ? `¿Borrar el plano "${plan.name}" y sus ${markerCount} marcador(es)? Esta acción no se puede deshacer.`
+    : `¿Borrar el plano "${plan.name}"? Esta acción no se puede deshacer.`;
+
+  const confirmed = await showConfirm({
+    title: 'Borrar plano',
+    message: msg,
+    okLabel: 'Borrar',
+    cancelLabel: 'Cancelar'
+  });
+  if(!confirmed) return;
+
+  // 1) borrar marcadores del plano
+  items = items.filter(r=>r.planId !== activePlanId);
+
+  // 2) borrar el plano de la lista
+  plans = plans.filter(p=>p.id !== activePlanId);
+
+  // 3) persistir cambios
+  localStorage.setItem('hergo_items_v2', JSON.stringify(items));
+  savePlans();
+
+  // 4) seleccionar otro plano como activo y refrescar la UI
+  const nextPlan = plans[0];
+  selected = null;
+  setActivePlan(nextPlan.id);
+  detail();
+  toast('Plano borrado: '+plan.name);
+};
+
+$('planFile').onchange = async e=>{
+  const f = e.target.files?.[0];
+  if(!f || !f.type.startsWith('image/')) return;
+// Auto-name: Croquis 1, Croquis 2, ...
+  const nextNumber = plans.filter(p=>/^Croquis \d+$/.test(p.name)).length + 1;
+  const name = 'Croquis ' + nextNumber;
+  const dataUrl = await new Promise(ok=>{
+    const rd=new FileReader(); rd.onload=()=>ok(rd.result); rd.readAsDataURL(f);
+  });
+  const plan = {
+    id: crypto.randomUUID?crypto.randomUUID():'plan_'+Date.now(),
+    name, img:dataUrl, createdAt:Date.now()
+  };
+  plans.push(plan);
+  const ok = savePlans();
+  e.target.value='';
+  if(ok){
+    setActivePlan(plan.id);
+    toast('Plano cargado: '+name);
+  } else {
+    // revert: remove the plan that failed to persist
+    plans = plans.filter(p=>p.id!==plan.id);
+  }
+};
+// ==========================================
+$('supplierFilter').addEventListener('change', renderSupplierView);
+$('supplierZoomin').onclick=()=>{
+  const s=$('supplierStage'); const w=parseFloat(s.dataset.zoom||'1');
+  const z=Math.min(3,w+.2); s.dataset.zoom=z; s.style.width=(1050*z)+'px';
+};
+$('supplierZoomout').onclick=()=>{
+  const s=$('supplierStage'); const w=parseFloat(s.dataset.zoom||'1');
+  const z=Math.max(.5,w-.2); s.dataset.zoom=z; s.style.width=(1050*z)+'px';
+};
+$('supplierFit').onclick=()=>{
+  const s=$('supplierStage'); s.dataset.zoom='1'; s.style.width='min(100%,1050px)';
+};
+$('zoomin').onclick=()=>{zoom=Math.min(3,zoom+.2);$('stage').style.width=(1050*zoom)+'px'};
+$('zoomout').onclick=()=>{zoom=Math.max(.5,zoom-.2);$('stage').style.width=(1050*zoom)+'px'};
+$('fit').onclick=()=>{zoom=1;$('stage').style.width='min(100%,1050px)'};
+
+function renderRows(){
+  let q=($('listsearch')?.value||'').toLowerCase();
+  $('rows').innerHTML=items
+    .filter(r=>`${r.code} ${r.name} ${r.sector} ${r.brand}`.toLowerCase().includes(q))
+    .map(r=>`<tr>
+      <td>${esc(r.code)}</td>
+      <td>${esc(r.name)}</td>
+      <td>${esc(r.sector)}</td>
+      <td>${esc(({unclassified:'Sin clasificar',available:'Disponible',reserved:'Reservada',sold:'Vendida'})[r.status])}</td>
+      <td><span class="brand-dot" style="background:${r.ringColor||'#ddd'}"></span>${esc(r.brand)}</td>
+      <td><button data-open="${r.id}">Abrir</button></td>
+    </tr>`).join('');
+  document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{
+    selected=b.dataset.open;view('plan');detail();render()
+  })
+}
+function renderStats(){
+  let n=items.length;
+  $('stats').innerHTML=[
+    ['Ubicaciones',n],
+    ['Disponibles',items.filter(x=>x.status==='available').length],
+    ['Reservadas',items.filter(x=>x.status==='reserved').length],
+    ['Vendidas',items.filter(x=>x.status==='sold').length],
+    ['Sin clasificar',items.filter(x=>x.status==='unclassified').length]
+  ].map(x=>`<div class="stat"><span class="muted">${x[0]}</span><b>${x[1]}</b></div>`).join('')
+}
+function renderGallery(){
+  $('gallery').innerHTML=items.flatMap(r=>r.images.map(im=>
+    `<div class="photo"><img src="${im.src}"><b>${esc(im.name)}</b><div class="muted">${esc(r.code)} · ${esc(r.brand)}</div></div>`
+  )).join('')||'<p class="muted">Todavía no hay imágenes cargadas.</p>'
+}
+function view(v){
+  document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+  $('view-'+v).classList.remove('hidden');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  if(v==='locations')renderRows();
+  if(v==='dashboard')renderStats();
+  if(v==='gallery')renderGallery();
+  if(v==='suppliers'){ rebuildSupplierFilter(); renderSupplierView(); }
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>view(b.dataset.view));
+$('listsearch').oninput=renderRows;
+
+$('export').onclick=()=>{
+  let lines=[
+    ['Código','Nombre','Sector','Estado','Proveedor','Marca','Producto','Precio','Responsable','Observaciones','Cantidad de Imágenes'],
+    ...items.map(r=>[r.code,r.name,r.sector,r.status,r.provider,r.brand,r.product,r.price,r.owner,r.notes,r.images.length])
+  ];
+  let csv=lines.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  let a=document.createElement('a'),u=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
+  a.href=u;a.download='hergo-ubicaciones.csv';a.click();URL.revokeObjectURL(u)
+};
+
+rebuildPlanSelect();
+applyActivePlanImage();
+render();
+detail();
+</script></body></html>
